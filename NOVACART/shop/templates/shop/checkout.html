@@ -1,0 +1,32 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+    <section class="section">
+        <div class="section-title">
+            <h2>Checkout</h2>
+            <p>Enter your details to place the order.</p>
+        </div>
+        <div class="cart-layout">
+            <form method="post" class="checkout-form">
+                {% csrf_token %}
+                <label>Name</label>
+                <input name="customer_name" required>
+                <label>Address</label>
+                <textarea name="address" required></textarea>
+                <label>City</label>
+                <input name="city" required>
+                <label>ZIP Code</label>
+                <input name="zip_code" required>
+                <label>Phone</label>
+                <input name="phone" required>
+                <button class="btn" type="submit">Place order</button>
+            </form>
+            <aside class="checkout-card">
+                <h3>Order summary</h3>
+                {% for item in cart_items %}
+                    <p>{{ item.quantity }} × {{ item.product.name }} — ${{ item.subtotal }}</p>
+                {% endfor %}
+                <p class="total">Total: ${{ total }}</p>
+            </aside>
+        </div>
+    </section>
+{% endblock %}
