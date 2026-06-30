@@ -1,0 +1,38 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+    <section id="products" class="section">
+        <div class="section-title">
+            <h2>Featured Products</h2>
+            <p>Pick a product, add it to your cart, and complete a simple order.</p>
+            <form method="get" class="search-form" style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                <input type="text" name="search" placeholder="Search products..." value="{{ search_query }}" style="flex: 1;">
+                <button class="btn btn-secondary" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="product-grid">
+            {% for product in products %}
+                <article class="card">
+                    <div class="badge">{{ product.category }}</div>
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <div class="card-footer">
+                        <strong>${{ product.price }}</strong>
+                        <div class="actions">
+                            <a class="btn btn-secondary" href="{% url 'product_detail' product.id %}">View</a>
+                            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="1">
+                                <button class="btn" type="submit">Add to cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center;">
+                    <p>No products found. Try a different search.</p>
+                    <a class="text-link" href="{% url 'home' %}">Clear search</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
